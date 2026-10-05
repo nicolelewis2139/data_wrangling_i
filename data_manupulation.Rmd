@@ -14,3 +14,55 @@ litters_df = read_csv("./data/FAS_litters.csv", na = c("", "NA", "."))
 litters_df = janitor::clean_names(litters_df)
 ```
 
+## `select`
+
+Choose some columns and not others
+
+a) Choosing specific variables to keep 
+
+```{r}
+select(litters_df, group, litter_number)
+```
+
+```{r}
+select(litters_df, group, gd0_weight)
+```
+
+b) Choosing a range of columns / vars to keep 
+
+```{r}
+select(litters_df, group, gd0_weight:gd_of_birth)
+```
+
+c) Specify which variables you want to lose 
+
+```{r}
+select(litters_df, -litter_number)
+```
+
+Renaming columns 
+
+```{r}
+select(litters_df, GROUP = group, LITTer_NUmBer = litter_number)
+```
+
+```{r}
+rename(litters_df, GROUP = group, LITTer_NUmBer = litter_number)
+```
+
+Select helpers
+
+a) Keeps vars that starts with gd and removes all others 
+```{r}
+select(litters_df, starts_with("gd"))
+```
+
+b) Moving variable to the front, but keeping all other variables
+```{r}
+select(litters_df, litter_number, everything())
+```
+
+```{r}
+relocate (litters_df, litter_number)
+```
+
