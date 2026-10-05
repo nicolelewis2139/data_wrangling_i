@@ -18,3 +18,45 @@ litters_df = janitor::clean_names(litters_df)
 
 ## Take a look at the data 
 
+Printing in the console. 
+
+```{r}
+litters_df
+```
+
+```{r}
+head(litters_df)
+tail(litters_df)
+```
+
+```{r}
+skimr::skim(litters_df)
+```
+
+Setting NA to missing so weight variables are treated as numeric.
+
+```{r}
+litters_df = read_csv(
+  "./data/FAS_litters.csv",
+  na = c("NA", ".", "", "N/A", "na"),
+  col_types = cols(
+    `GD0 weight` = col_double(),
+    `GD18 weight` = col_double()
+  )
+)
+```
+
+
+```{r}
+skimr::skim(litters_df)
+```
+
+
+
+
+
+
+
+
+
+
