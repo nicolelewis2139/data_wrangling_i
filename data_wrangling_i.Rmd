@@ -51,6 +51,17 @@ litters_df = read_csv(
 skimr::skim(litters_df)
 ```
 
+## Options to read_csv
+
+Chdck out `?read_csv()` for more information. 
+
+Skips first 10 rows. 
+
+```{r}
+litters_df = read_csv("./data/FAS_litters.csv")
+```
+
+
 
 
 
