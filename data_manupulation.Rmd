@@ -141,5 +141,81 @@ litters_df =
 ```
 
 
+|> vs %>%
+
+```{r}
+litters_df |>
+  lm(wt_gain ~ pups_born_alive, data = _) |>
+  broom::tidy()
+```
 
 
+Learning Assessments 
+
+```{r}
+pups_df = 
+  read_csv(
+    "./data/FAS_pups.csv",
+    skip = 3,
+    na = c("NA", "."))
+pups_df = janitor::clean_names(pups_df)
+```
+
+1. In the pups data, select the columns containing litter number, sex, and PD ears
+
+```{r}
+select(pups_df, litter_number:pd_ears)
+```
+
+2a. In the pups data: Filter to include only pups with sex 1
+
+```{r}
+filter(pups_df, sex == 1)
+```
+
+2b. In the pups data: Filter to include only pups with PD walk less than 11 and sex 2
+
+```{r}
+filter(pups_df, sex == 2, pd_walk < 11)
+```
+
+3a. In the pups data: Create a variable that subtracts 7 from PD pivot
+
+```{r}
+mutate(pups_df, pivot_minus7 = pd_pivot - 7)
+```
+
+3b. In the pups data: Create a variable that is the sum of all the PD variables
+
+```{r}
+mutate(pups_df, pd_sum = pd_ears + pd_eyes + pd_pivot + pd_walk)
+```
+
+4. Write a chain of commands that:
+loads the pups data
+cleans the variable names
+filters the data to include only pups with sex 1
+removes the PD ears variable
+creates a variable that indicates whether PD pivot is 7 or more days
+
+```{r}
+pups_df = 
+  read_csv("./data/FAS_pups.csv", na = c("", "NA", "."), skip = 3) |> 
+  janitor::clean_names() |> 
+  filter(sex == 1) |> 
+  select(-pd_ears) |> 
+  mutate(pd_pivot_gt7 = pd_pivot > 7)
+pups_df
+```
+
+
+
+
+```{r}
+litters_df = 
+  read_csv("./data/FAS_litters.csv", na = c("", "NA", ".")) %>% 
+  janitor::clean_names() %>% 
+  select(-pups_survive) %>% 
+  mutate(wt_gain = gd18_weight - gd0_weight) %>% 
+  drop_na(gd0_weight)
+```
