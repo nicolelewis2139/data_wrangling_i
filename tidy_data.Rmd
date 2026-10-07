@@ -5,6 +5,7 @@ output: github_document
 
 ```{r setup}
 library(tidyverse)
+library(dplyr)
 ```
 
 ## `pivot_longer`
@@ -128,6 +129,36 @@ fas_df =
   arrange(litter_number) |> 
   relocate(litter_number, dose, day_of_tx)
 ```
+
+
+## Learning assessments
+
+1. pivot_longer
+In the litters data, the variables gd0_weight and gd18_weight give the weight of the mother mouse on gestational days 0 and 18. Write a data cleaning chain that retains only litter_number and these columns; produces new variables gd and weight; and makes gd a numeric variable taking values 0 and 18 (for the last part, you might want to use recode …). Is this version “tidy”?
+
+```{r}
+litters_wide = 
+  read_csv(
+    "./data/FAS_litters.csv",
+    na = c(".", "NA", "")) |> 
+  janitor::clean_names() |> 
+  select(litter_number, ends_with ("weight")) |> 
+  pivot_longer(
+    gd0_weight:gd18_weight,
+    names_to = "gd", 
+    values_to = "weight") |> 
+  mutate(
+    gd = case_match(
+      gd, 
+      "gd0_weight" ~ 0,
+      "gd18_weight" ~ 18,
+    )
+  )
+  
+```
+
+
+
 
 
 
