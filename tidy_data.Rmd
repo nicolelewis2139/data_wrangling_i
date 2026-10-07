@@ -1,0 +1,9 @@
+---
+title: "Class 7: Tidy Data"
+output: github_document
+---
+
+```{r setup}
+library(tidyverse)
+```
+
