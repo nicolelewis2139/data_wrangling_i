@@ -128,3 +128,49 @@ lotr_tidy =
     values_to = "words"
   )
 ```
+
+## Joining datasets
+
+Import and clean the FAS datasets.
+
+``` r
+pups_df = 
+  read_csv("./data/FAS_pups.csv", skip = 3, na = c(".", "NA")) |> 
+  janitor::clean_names() |> 
+  mutate(sex = recode(sex, `1` = "male", `2` = "female"))
+```
+
+    ## Rows: 313 Columns: 6
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## chr (1): Litter Number
+    ## dbl (5): Sex, PD ears, PD eyes, PD pivot, PD walk
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+``` r
+litters_df = 
+  read_csv("./data/FAS_litters.csv") |> 
+  janitor::clean_names() |> 
+  relocate(litter_number) |> 
+  separate(group, into = c("dose", "day_of_tx"), sep = 3)
+```
+
+    ## Rows: 49 Columns: 8
+    ## ── Column specification ────────────────────────────────────────────────────────
+    ## Delimiter: ","
+    ## chr (4): Group, Litter Number, GD0 weight, GD18 weight
+    ## dbl (4): GD of Birth, Pups born alive, Pups dead @ birth, Pups survive
+    ## 
+    ## ℹ Use `spec()` to retrieve the full column specification for this data.
+    ## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.
+
+Join the FAS datasets Left join; merge litters data into the pups data
+
+``` r
+fas_df = 
+  left_join(pups_df, litters_df, by = "litter_number") |> 
+  arrange(litter_number) |> 
+  relocate(litter_number, dose, day_of_tx)
+```
